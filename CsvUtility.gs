@@ -32,12 +32,13 @@ var CsvUtility=new function(){
       jsonRow.AMIS_Region=values[i][batchCSVMapping.AMIS_Region];
       jsonRow.AMIS_PRODUCT=values[i][batchCSVMapping.AMIS_PRODUCT];
       jsonRow.AMIS_Element_Code=values[i][batchCSVMapping.AMIS_Element_Code];
-      
+      jsonRow.AMIS_Product_Code=values[i][batchCSVMapping.AMIS_Product_Code];
       jsonRow.AMIS_Element=values[i][batchCSVMapping.AMIS_Element];
       jsonRow.Amis_Units=values[i][batchCSVMapping.Amis_Units];
       jsonRow.Amis_Year=values[i][batchCSVMapping.Amis_Year];
       jsonRow.AMIS_Fcast_Month=values[i][batchCSVMapping.AMIS_Fcast_Month];
       jsonRow.Amis_Value=values[i][batchCSVMapping.Amis_Value];
+      jsonRow.Amis_Value_2=values[i][batchCSVMapping.Amis_Value_2];
       jsonRow.Note_1=values[i][batchCSVMapping["Note 1"]];
       jsonRow.Note_2=values[i][batchCSVMapping["Note 2"]];
       jsonRow.Note_3=values[i][batchCSVMapping["Note 3"]];
