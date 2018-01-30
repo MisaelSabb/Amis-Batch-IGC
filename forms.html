@@ -187,7 +187,7 @@
        // Initialize Firebase
        //-----------------------------------------------------------------
        var config = {
-       	apiKey: "",
+        apiKey: "",
        	authDomain: "",
        	databaseURL: "",
        	projectId: "",
@@ -361,11 +361,8 @@
     google.script.run
       .withSuccessHandler(showMessage)
       .uploadFileToGoogleDrive(
-         e.target.result, file.name, 
-         $('input#name').val(), 
-         $('input#email').val(),
-         userToken,
-         uid
+         e.target.result, file.name,         
+         userToken
       );
   };
 
