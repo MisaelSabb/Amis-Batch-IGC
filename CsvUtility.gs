@@ -5,9 +5,10 @@ var CsvUtility=new function(){
   * @param  {string} auth token     
   * @param  {string} user uid on firebase
   * @param  {ARRAY} csvData
+  * @return  {OBJECT} ElaborationResult
   */
   //---------------------------------------------------------
-  this.elaborateData=function(userToken,uid, values) {
+  this.elaborateData=function(userToken, values) {
     
     //retrive config
     var batchCSVMappingNode= 'config/batchConfig/igc/CSVMappingOrderFields';
@@ -19,40 +20,45 @@ var CsvUtility=new function(){
     var lenght = values.length;    
     
     //inizialize the json array
-    var jsonArray = []
+    var jsonArray = [];
   
-   
-        
-    //loop the CSV elements
-    for(var i=1; i<lenght;i++){
-      //jsonRow
-      var jsonRow={};      
-            
-      jsonRow.AMIS_Region_Code=values[i][batchCSVMapping.AMIS_Region_Code];
-      jsonRow.AMIS_Region=values[i][batchCSVMapping.AMIS_Region];
-      jsonRow.AMIS_PRODUCT=values[i][batchCSVMapping.AMIS_PRODUCT];
-      jsonRow.AMIS_Element_Code=values[i][batchCSVMapping.AMIS_Element_Code];
-      jsonRow.AMIS_Product_Code=values[i][batchCSVMapping.AMIS_Product_Code];
-      jsonRow.AMIS_Element=values[i][batchCSVMapping.AMIS_Element];
-      jsonRow.Amis_Units=values[i][batchCSVMapping.Amis_Units];
-      jsonRow.Amis_Year=values[i][batchCSVMapping.Amis_Year];
-      jsonRow.AMIS_Fcast_Month=values[i][batchCSVMapping.AMIS_Fcast_Month];
-      jsonRow.Amis_Value=values[i][batchCSVMapping.Amis_Value];
-      jsonRow.Amis_Value_2=values[i][batchCSVMapping.Amis_Value_2];
-      jsonRow.Note_1=values[i][batchCSVMapping["Note 1"]];
-      jsonRow.Note_2=values[i][batchCSVMapping["Note 2"]];
-      jsonRow.Note_3=values[i][batchCSVMapping["Note 3"]];
-      jsonRow.AMOUNT_VALUE=values[i][batchCSVMapping.AMOUNT_VALUE];
+    var elaborationResult= CsvValidator.validate(values,batchCSVMapping);
+    
+    //if the CSV is valid, proced with elaboration
+    if(elaborationResult.result){
       
-      jsonArray.push(jsonRow);
-      //break;
-    }    
+      //loop the CSV elements
+      for(var i=1; i<lenght;i++){
+        //jsonRow
+        var jsonRow={};      
+        
+        jsonRow.AMIS_Region_Code=values[i][batchCSVMapping.AMIS_Region_Code];
+        jsonRow.AMIS_Region=values[i][batchCSVMapping.AMIS_Region];
+        jsonRow.AMIS_PRODUCT=values[i][batchCSVMapping.AMIS_PRODUCT];
+        jsonRow.AMIS_Element_Code=values[i][batchCSVMapping.AMIS_Element_Code];
+        jsonRow.AMIS_Product_Code=values[i][batchCSVMapping.AMIS_Product_Code];
+        jsonRow.AMIS_Element=values[i][batchCSVMapping.AMIS_Element];
+        jsonRow.Amis_Units=values[i][batchCSVMapping.Amis_Units];
+        jsonRow.Amis_Year=values[i][batchCSVMapping.Amis_Year];
+        jsonRow.AMIS_Fcast_Month=values[i][batchCSVMapping.AMIS_Fcast_Month];
+        jsonRow.Amis_Value=values[i][batchCSVMapping.Amis_Value];
+        jsonRow.Amis_Value_2=values[i][batchCSVMapping.Amis_Value_2];
+        jsonRow.Note_1=values[i][batchCSVMapping["Note 1"]];
+        jsonRow.Note_2=values[i][batchCSVMapping["Note 2"]];
+        jsonRow.Note_3=values[i][batchCSVMapping["Note 3"]];
+        jsonRow.AMOUNT_VALUE=values[i][batchCSVMapping.AMOUNT_VALUE];
+        
+        jsonArray.push(jsonRow);
+        //break;
+      }    
+      
+      //Logger.log(jsonArray);
+      
+      //save data in FIREBASE
+      FirebaseConnector.writeOnFirebase(jsonArray,dataNode,userToken);
+    }
     
-    //Logger.log(jsonArray);
-    
-    //save data in FIREBASE
-    FirebaseConnector.writeOnFirebase(jsonArray,dataNode,userToken);
-    
+    return elaborationResult;
   }
   //---------------------------------------------------------
   // END Fetch Sheet Data from FIREBASE function
