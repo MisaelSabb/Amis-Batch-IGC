@@ -33,8 +33,14 @@ function uploadFileToGoogleDrive(data, file, userToken) {
     var elaborationResult= CsvUtility.elaborateData(userToken, csvData);  
     
     
+    if(elaborationResult.result){
+      //call ETL PROCESS
+      ETLCaller.runETLJob();
+    }
     
-    return elaborationResult.result ? "OK" : elaborationResult.error ;
+    elaborationResult.result ? elaborationResult.text='Data Uploaded Successfully. Please close the browser.' : elaborationResult.text='';
+    
+    return elaborationResult;
 
   } catch (f) {
     return f.toString();
