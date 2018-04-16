@@ -353,7 +353,7 @@
     google.script.run
       .withSuccessHandler(showMessage)
       .uploadFileToGoogleDrive(
-         e.target.result, file.name,         
+         e.target.result, 'web_app_'+file.name,
          userToken
       );
   };
