@@ -5,7 +5,7 @@ function LIB_FUNC(){AmisLib.Utility.LIB_FUNC.apply(this, arguments);}
 function doGet(e) {
   return HtmlService
     .createHtmlOutputFromFile('forms.html')
-    .setTitle("");
+    .setTitle("AMIS IGC UPLOAD");
 }
 
 function uploadFileToGoogleDrive(data, file, userToken) {
@@ -36,6 +36,8 @@ function uploadFileToGoogleDrive(data, file, userToken) {
     if(elaborationResult.result){
       //call ETL PROCESS
       ETLCaller.runETLJob();
+      
+      ETLCaller.runCloudETLJob();
     }
     
     elaborationResult.result ? elaborationResult.text='Data Uploaded Successfully. Please close the browser.' : elaborationResult.text='';
